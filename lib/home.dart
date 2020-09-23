@@ -12,6 +12,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<Map> _todoItems = [
+    {"title": "Make Sandwich", "completed": true},
+    {"title": "Get Giddy Widit", "completed": false},
+    {"title": "Get down", "completed": true}
+
+  ];
+
+  void _completeTodo(String todoTitle){
+    List<Map> todoItems = _todoItems;
+    todoItems.forEach((item) {
+      if(item['title'] == todoTitle){
+        item['completed'] = !item['completed'];
+      }
+    });
+    setState((){
+      _todoItems = todoItems;
+    });
+  }
+
+  void _addTodo(String todoTitle){
+    Map newTodo = {
+      "title": todoTitle,
+      "completed": false
+    };
+    List<Map> todoItems = _todoItems;
+    todoItems.add(newTodo);
+    setState((){
+      _todoItems = todoItems;
+    });
+  }
+
+  void _deleteTodo(String todoTitle){
+    List<Map> todoItems = _todoItems.where((item) => item['title'] != todoTitle).toList();
+    
+    setState((){
+      _todoItems = todoItems;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +65,7 @@ class _HomeState extends State<Home> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TodoFormPage())
+                MaterialPageRoute(builder: (context) => TodoFormPage(handleAdd: _addTodo))
               );
             },
           ),
@@ -39,7 +77,7 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Todo()
+        child: Todo(todoItems: _todoItems, handleCheck: _completeTodo, handleDelete: _deleteTodo)
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},

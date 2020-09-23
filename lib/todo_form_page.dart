@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class TodoFormPage extends StatelessWidget{
+  TodoFormPage({Key key, @required this.handleAdd}) : super(key: key);
+
+  final Function handleAdd;
+
   @override
   Widget build(BuildContext context){
   return Scaffold(
@@ -8,13 +12,17 @@ class TodoFormPage extends StatelessWidget{
       title: Text('Add New Todo')
     ),
     body: Center(
-      child: TodoForm()
+      child: TodoForm(handleAdd: handleAdd,)
     ),
   );
   }
 }
 
 class TodoForm extends StatefulWidget{
+  TodoForm({Key key, @required this.handleAdd}) : super(key: key);
+
+  final Function handleAdd;
+
   @override
   _TodoFormState createState() => _TodoFormState();
 }
@@ -30,6 +38,10 @@ class _TodoFormState extends State<TodoForm>{
     controllerTask.dispose();
     controllerSub.dispose();
     super.dispose();
+  }
+
+  void _handleAdd(){
+    widget.handleAdd(controllerTask.text);
   }
 
   @override
@@ -51,15 +63,8 @@ class _TodoFormState extends State<TodoForm>{
         RaisedButton(
           onPressed: (){ 
             if(_formKey.currentState.validate()){
-              return showDialog(
-                context: context,
-                builder: (context){
-                  return AlertDialog(
-                    content: Text(controllerTask.text),
-                  );
-                }
-              );
-              // Navigator.pop(context);
+              _handleAdd();
+              Navigator.pop(context);
             }
           },
           child: Text('Submit')
