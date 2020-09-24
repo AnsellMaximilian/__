@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/todo.dart';
 import 'package:flutter_todo/todo_form_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -13,43 +16,60 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Map> _todoItems = [
-    {"title": "Make Sandwich", "completed": true},
-    {"title": "Get Giddy Widit", "completed": false},
-    {"title": "Get down", "completed": true}
+  List<Map<dynamic, dynamic>> _todoItems = [];
 
-  ];
+  @override
+  void initState(){
+    super.initState();
+    _loadTodos();
+  }
 
-  void _completeTodo(String todoTitle){
-    List<Map> todoItems = _todoItems;
-    todoItems.forEach((item) {
-      if(item['title'] == todoTitle){
-        item['completed'] = !item['completed'];
+  void _loadTodos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Map<dynamic, dynamic>> todos = prefs.getString('todos') != null ? List<Map<dynamic, dynamic>>.from(jsonDecode(prefs.getString('todos'))) : [];
+    setState((){
+      _todoItems = todos;
+    });
+  }
+
+  void _completeTodo(String todoTitle) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Map<dynamic, dynamic>> todos = prefs.getString('todos') != null ? List<Map<dynamic, dynamic>>.from(jsonDecode(prefs.getString('todos'))) : [];
+    todos.forEach((todo) {
+      if(todo['title'] == todoTitle){
+        todo['completed'] = !todo['completed'];
       }
     });
     setState((){
-      _todoItems = todoItems;
+      _todoItems = todos;
     });
+    prefs.setString('todos', jsonEncode(todos));
   }
 
-  void _addTodo(String todoTitle){
+  void _addTodo(String todoTitle, String todoSubtitle) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     Map newTodo = {
       "title": todoTitle,
+      "subtitle": todoSubtitle,
       "completed": false
     };
-    List<Map> todoItems = _todoItems;
-    todoItems.add(newTodo);
+    List<Map<dynamic, dynamic>> todos = _todoItems;
+    todos.add(newTodo);
     setState((){
-      _todoItems = todoItems;
+      _todoItems = todos;
     });
+    prefs.setString('todos', jsonEncode(todos));
   }
 
-  void _deleteTodo(String todoTitle){
-    List<Map> todoItems = _todoItems.where((item) => item['title'] != todoTitle).toList();
+  void _deleteTodo(String todoTitle) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Map> todos = _todoItems.where((todo) => todo['title'] != todoTitle).toList();
     
     setState((){
-      _todoItems = todoItems;
+      _todoItems = todos;
     });
+
+    prefs.setString('todos', jsonEncode(todos));
   }
 
   @override

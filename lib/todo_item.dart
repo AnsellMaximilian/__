@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TodoItem extends StatelessWidget{
-  final String title;
+  final String title, subtitle;
   final bool completed;
   final ValueChanged<String> handleCheck;
   final Function handleDelete;
-  TodoItem({Key key, this.title, this.completed, @required this.handleCheck, @required this.handleDelete}) : super(key: key);
+  TodoItem({Key key, this.title, this.subtitle, this.completed, @required this.handleCheck, @required this.handleDelete}) : super(key: key);
 
   void _handleCheck(){
     handleCheck(title);
@@ -20,7 +20,7 @@ class TodoItem extends StatelessWidget{
 
   return ListTile(
     title: Text(title),
-    subtitle: Text("subtitle"),
+    subtitle: Text(subtitle),
     leading: IconButton(
       onPressed: (){ _handleCheck();},
       icon: Icon(completed ? Icons.check_box : Icons.crop_square)

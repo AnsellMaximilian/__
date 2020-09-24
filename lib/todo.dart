@@ -17,7 +17,7 @@ class _TodoState extends State<Todo>{
   List<Widget> _buildTodoItems() {
     List<Widget> itemsList = [];
     widget.todoItems.forEach((item){ 
-       itemsList.add(TodoItem(title: item['title'], completed: item['completed'], handleCheck: widget.handleCheck, handleDelete: widget.handleDelete,));
+       itemsList.add(TodoItem(title: item['title'], subtitle: item['subtitle'], completed: item['completed'], handleCheck: widget.handleCheck, handleDelete: widget.handleDelete,));
     });
     return itemsList;
   }

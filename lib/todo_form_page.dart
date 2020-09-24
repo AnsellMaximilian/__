@@ -41,7 +41,7 @@ class _TodoFormState extends State<TodoForm>{
   }
 
   void _handleAdd(){
-    widget.handleAdd(controllerTask.text);
+    widget.handleAdd(controllerTask.text, controllerSub.text);
   }
 
   @override
