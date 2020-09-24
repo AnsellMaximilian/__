@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class TodoItem extends StatelessWidget{
-  final String title, subtitle;
+  final String title, subtitle, id;
   final bool completed;
   final ValueChanged<String> handleCheck;
   final Function handleDelete;
-  TodoItem({Key key, this.title, this.subtitle, this.completed, @required this.handleCheck, @required this.handleDelete}) : super(key: key);
+  TodoItem({Key key, this.id, this.title, this.subtitle, this.completed, @required this.handleCheck, @required this.handleDelete}) : super(key: key);
 
   void _handleCheck(){
-    handleCheck(title);
+    handleCheck(id);
   }
 
   void _handleDelete(){
-    handleDelete(title);
+    handleDelete(id);
   }
 
   @override

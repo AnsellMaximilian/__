@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/todo.dart';
 import 'package:flutter_todo/todo_form_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
+
+Uuid uuid = Uuid();
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -32,11 +35,12 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _completeTodo(String todoTitle) async {
+  void _completeTodo(String todoId) async {
+    print(todoId);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<Map<dynamic, dynamic>> todos = prefs.getString('todos') != null ? List<Map<dynamic, dynamic>>.from(jsonDecode(prefs.getString('todos'))) : [];
     todos.forEach((todo) {
-      if(todo['title'] == todoTitle){
+      if(todo['id'] == todoId){
         todo['completed'] = !todo['completed'];
       }
     });
@@ -48,7 +52,9 @@ class _HomeState extends State<Home> {
 
   void _addTodo(String todoTitle, String todoSubtitle) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String newId = uuid.v1();
     Map newTodo = {
+      "id": newId,
       "title": todoTitle,
       "subtitle": todoSubtitle,
       "completed": false
@@ -61,9 +67,9 @@ class _HomeState extends State<Home> {
     prefs.setString('todos', jsonEncode(todos));
   }
 
-  void _deleteTodo(String todoTitle) async {
+  void _deleteTodo(String todoId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<Map> todos = _todoItems.where((todo) => todo['title'] != todoTitle).toList();
+    List<Map> todos = _todoItems.where((todo) => todo['id'] != todoId).toList();
     
     setState((){
       _todoItems = todos;
@@ -100,11 +106,6 @@ class _HomeState extends State<Home> {
       body: Center(
         child: Todo(todoItems: _todoItems, handleCheck: _completeTodo, handleDelete: _deleteTodo)
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
