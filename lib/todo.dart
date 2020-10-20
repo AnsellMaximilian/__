@@ -25,7 +25,7 @@ class _TodoState extends State<Todo>{
   @override
   Widget build(BuildContext context){
     return ListView(
-      children: _buildTodoItems()
+        children: _buildTodoItems()
     );
   }
 }
