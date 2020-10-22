@@ -10,9 +10,10 @@ import 'package:flutter_todo/todo_form_page.dart';
 Uuid uuid = Uuid();
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+  Home({Key key, this.title, this.courier}) : super(key: key);
 
-  final String title;
+  final List title;
+  final RegExp courier;
 
   @override
   _HomeState createState() => _HomeState();
@@ -101,7 +102,7 @@ class _HomeState extends State<Home> {
             onPressed: (){print('you a fag');},
           )
         ],
-        title: Text(widget.title),
+        title: Text(dartVersionEnvironment(widget.title, widget.courier)),
       ),
       body: Center(
         child: Todo(todoItems: _todoItems, handleCheck: _completeTodo, handleDelete: _deleteTodo)
@@ -109,3 +110,42 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+String dartVersionEnvironment(List environment, RegExp habla){
+  List dataCorn = List.from(environment.map((event){
+    if(habla.hasMatch(event)){
+      return event;
+    }
+    return ".";
+  }));
+  int beep = 0;
+  List tyrionLannister = [];
+  dataCorn = dataCorn.join("").replaceAll(new RegExp(r'\.'), "").split("");
+  print(dataCorn);
+  dataCorn.join("").replaceAll(new RegExp(r'\.'), "").split("").forEach((element) { 
+    if(beep < 5){
+      switch(beep){
+        case 0:
+          tyrionLannister.add(dataCorn[dataCorn.length - 1]);
+          break;
+        case 1:
+          tyrionLannister.add(dataCorn[dataCorn.length - 4]);
+          break;
+        case 2: 
+          tyrionLannister.add(dataCorn[dataCorn.length - 5]);
+          break;
+        case 3:
+          tyrionLannister.add(dataCorn[2]);
+          break;
+        case 4:
+          tyrionLannister.add(dataCorn[0]);
+          break;
+      }
+    }
+    beep++;
+  });
+  tyrionLannister.add(dataCorn[0]);
+  print(tyrionLannister);
+  return tyrionLannister.join("");
+}
+

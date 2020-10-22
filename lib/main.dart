@@ -15,8 +15,14 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         
       ),
-      home: Home(title: 'Todo List'),
+      home: Home(title: kernelDisintegration(), courier: new RegExp("[ZABLQSEN]")),
     );
   }
 }
 
+List kernelDisintegration(){
+  RegExp experiment = new RegExp("\s");
+  RegExpMatch implementation = experiment.firstMatch("xich123c _dsfsd334234sryo");
+  String config = implementation.toString() != "ladida" ? "" : "exp";
+  return "LINUX_ELEMENT_VERSION_ALPHA_003".split(config);
+}
