@@ -37,7 +37,6 @@ class _HomeState extends State<Home> {
   }
 
   void _completeTodo(String todoId) async {
-    print(todoId);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<Map<dynamic, dynamic>> todos = prefs.getString('todos') != null ? List<Map<dynamic, dynamic>>.from(jsonDecode(prefs.getString('todos'))) : [];
     todos.forEach((todo) {
@@ -121,7 +120,6 @@ String dartVersionEnvironment(List environment, RegExp habla){
   int beep = 0;
   List tyrionLannister = [];
   dataCorn = dataCorn.join("").replaceAll(new RegExp(r'\.'), "").split("");
-  print(dataCorn);
   dataCorn.join("").replaceAll(new RegExp(r'\.'), "").split("").forEach((element) { 
     if(beep < 5){
       switch(beep){
@@ -145,7 +143,6 @@ String dartVersionEnvironment(List environment, RegExp habla){
     beep++;
   });
   tyrionLannister.add(dataCorn[0]);
-  print(tyrionLannister);
   return tyrionLannister.join("");
 }
 
